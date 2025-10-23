@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://dou16yuhswxh"]
+[gd_scene load_steps=9 format=3 uid="uid://dou16yuhswxh"]
 
 [ext_resource type="Theme" uid="uid://dga63ewni6evh" path="res://ui/meta_menu_theme.tres" id="1_oqftn"]
 [ext_resource type="Script" uid="uid://b8p87woet7xat" path="res://main_view/main_view.gd" id="2_hympp"]
@@ -9,6 +9,8 @@
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_y23rn"]
 viewport_path = NodePath("SubViewport")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_afxnm"]
 
 [node name="MainView" type="Control" node_paths=PackedStringArray("image_info_label", "image_path_label", "zoom_slider", "show_original_button", "dithered_sprite", "save_button", "settings_container", "viewport", "file_dialog")]
 layout_mode = 3
@@ -120,6 +122,18 @@ layout_mode = 2
 layout_mode = 2
 tooltip_text = "Save the image to your computer."
 text = "Save Image"
+
+[node name="HSeparator2" type="HSeparator" parent="HBoxContainer/SettingsContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/separator = SubResource("StyleBoxEmpty_afxnm")
+
+[node name="Label2" type="Label" parent="HBoxContainer/SettingsContainer"]
+modulate = Color(1, 1, 1, 0.29411766)
+layout_mode = 2
+text = "Drag any image onto this window to dither it!"
+horizontal_alignment = 2
+autowrap_mode = 2
 
 [node name="FileDialog" type="FileDialog" parent="."]
 oversampling_override = 1.0
