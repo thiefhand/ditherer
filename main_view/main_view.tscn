@@ -1,0 +1,113 @@
+[gd_scene load_steps=8 format=3 uid="uid://dou16yuhswxh"]
+
+[ext_resource type="Theme" uid="uid://dga63ewni6evh" path="res://ui/meta_menu_theme.tres" id="1_oqftn"]
+[ext_resource type="Script" uid="uid://b8p87woet7xat" path="res://main_view/main_view.gd" id="2_hympp"]
+[ext_resource type="Texture2D" uid="uid://ca6cxdwd4ifwq" path="res://main_view/sucky.png" id="2_y23rn"]
+[ext_resource type="Material" uid="uid://cojv2vsqo3inn" path="res://main_view/dither_mat.tres" id="3_kyf05"]
+[ext_resource type="PackedScene" uid="uid://ssk1xfvkor05" path="res://main_view/float_uniform_control.tscn" id="3_pwtt8"]
+[ext_resource type="Script" uid="uid://dhy41ston6oim" path="res://main_view/viewport_tex.gd" id="6_afxnm"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_y23rn"]
+viewport_path = NodePath("SubViewport")
+
+[node name="MainView" type="Control" node_paths=PackedStringArray("image_info_label", "image_path_label", "zoom_slider", "dithered_sprite", "dither_button", "settings_container")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_oqftn")
+script = ExtResource("2_hympp")
+image_info_label = NodePath("HBoxContainer/PanelContainer/ImageInfo")
+image_path_label = NodePath("HBoxContainer/PanelContainer/VBoxContainer/ImagePath")
+zoom_slider = NodePath("HBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/ZoomSlider")
+dithered_sprite = NodePath("SubViewport/DitheredSprite")
+dither_button = NodePath("HBoxContainer/SettingsContainer/DitherButton")
+settings_container = NodePath("HBoxContainer/SettingsContainer/SettingsContainer")
+control_types = Dictionary[int, PackedScene]({
+3: ExtResource("3_pwtt8")
+})
+
+[node name="SubViewport" type="SubViewport" parent="."]
+transparent_bg = true
+snap_2d_transforms_to_pixel = true
+snap_2d_vertices_to_pixel = true
+
+[node name="DitheredSprite" type="Sprite2D" parent="SubViewport"]
+texture_filter = 1
+texture_repeat = 1
+material = ExtResource("3_kyf05")
+scale = Vector2(3, 3)
+texture = ExtResource("2_y23rn")
+
+[node name="Camera2D" type="Camera2D" parent="SubViewport"]
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ViewportTex" type="TextureRect" parent="HBoxContainer/PanelContainer" node_paths=PackedStringArray("viewport")]
+layout_mode = 2
+texture = SubResource("ViewportTexture_y23rn")
+script = ExtResource("6_afxnm")
+viewport = NodePath("../../../SubViewport")
+
+[node name="ImageInfo" type="Label" parent="HBoxContainer/PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+text = "200x200 pixels"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Zoom"
+
+[node name="ZoomSlider" type="HSlider" parent="HBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+min_value = 1.0
+value = 1.0
+
+[node name="ImagePath" type="Label" parent="HBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+text = "example.png"
+
+[node name="SettingsContainer" type="VBoxContainer" parent="HBoxContainer"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/SettingsContainer"]
+layout_mode = 2
+theme_type_variation = &"HeaderLarge"
+text = "DITHERER"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="HBoxContainer/SettingsContainer"]
+layout_mode = 2
+
+[node name="SettingsContainer" type="VBoxContainer" parent="HBoxContainer/SettingsContainer"]
+layout_mode = 2
+
+[node name="DitherButton" type="Button" parent="HBoxContainer/SettingsContainer"]
+layout_mode = 2
+text = "Dither"

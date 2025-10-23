@@ -1,0 +1,8 @@
+{
+    "workbench.colorCustomizations": {
+        "activityBar.background": "#3F2907",
+        "titleBar.activeBackground": "#583909",
+        "titleBar.activeForeground": "#FEFAF3"
+    },
+    "godotTools.editorPath.godot4": "/home/gusg21/proj/godot/Godot_v4.5.1-stable_linux.x86_64"
+}

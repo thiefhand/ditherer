@@ -1,0 +1,10 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://cojv2vsqo3inn"]
+
+[ext_resource type="Shader" uid="uid://bq2gv7s5d4yo5" path="res://main_view/dither.gdshader" id="1_o7j45"]
+[ext_resource type="Texture2D" uid="uid://cwmtq7x88epdb" path="res://main_view/dither_pattern_16.png" id="2_22spk"]
+
+[resource]
+shader = ExtResource("1_o7j45")
+shader_parameter/dither_tex = ExtResource("2_22spk")
+shader_parameter/exposure = 1.0
+shader_parameter/contrast = 1.0

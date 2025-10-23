@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://bm6b6nyt3mcbk"]
+
+[ext_resource type="Theme" uid="uid://dga63ewni6evh" path="res://ui/meta_menu_theme.tres" id="1_b1uxb"]
+[ext_resource type="PackedScene" uid="uid://dou16yuhswxh" path="res://main_view/main_view.tscn" id="1_xj4oy"]
+
+[node name="DithererRoot" type="Node"]
+
+[node name="MainLayer" type="CanvasLayer" parent="."]
+
+[node name="ViewContainer" type="MarginContainer" parent="MainLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("1_b1uxb")
+
+[node name="MainView" parent="MainLayer/ViewContainer" instance=ExtResource("1_xj4oy")]
+layout_mode = 2
