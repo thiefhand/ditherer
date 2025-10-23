@@ -3,7 +3,7 @@ shader_type canvas_item;
 uniform sampler2D dither_tex : filter_nearest, repeat_enable;
 uniform float exposure : hint_range(0.0, 2.0) = 1.0;
 uniform float contrast : hint_range(0.0, 4.0) = 1.0;
-uniform float steps : hint_range(0.0, 8.0, 1.0) = 1.0;
+uniform float steps : hint_range(1.0, 24.0, 1.0) = 1.0;
 
 void vertex() {
 	// Called for every vertex the material is visible on.

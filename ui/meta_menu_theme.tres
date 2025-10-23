@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=32 format=3 uid="uid://dga63ewni6evh"]
+[gd_resource type="Theme" load_steps=34 format=3 uid="uid://dga63ewni6evh"]
 
 [ext_resource type="FontFile" uid="uid://caeslr57akqg7" path="res://ui/IBMPlexMono-Bold.ttf" id="1_4eyek"]
 [ext_resource type="FontFile" uid="uid://dtnwwysagtn4p" path="res://ui/IBMPlexMono-Regular.ttf" id="1_6hq2c"]
@@ -58,6 +58,9 @@ border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
 border_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4eyek"]
+bg_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_otv3f"]
 color = Color(1, 1, 1, 1)
@@ -252,6 +255,12 @@ border_width_right = 2
 border_width_bottom = 2
 border_color = Color(1, 1, 1, 1)
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4eyek"]
+content_margin_left = 20.0
+content_margin_top = 20.0
+content_margin_right = 20.0
+content_margin_bottom = 20.0
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_krkfi"]
 bg_color = Color(0, 0, 0, 1)
 border_width_left = 2
@@ -262,6 +271,7 @@ border_color = Color(1, 1, 1, 1)
 shadow_color = Color(0, 0, 0, 0.737255)
 shadow_size = 5
 shadow_offset = Vector2(0, 4)
+anti_aliasing = false
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i1a86"]
 content_margin_left = 4.0
@@ -313,6 +323,7 @@ CheckBox/styles/hover_pressed = SubResource("StyleBoxFlat_bee2j")
 CheckButton/constants/align_to_largest_stylebox = 1
 CheckButton/icons/checked = null
 CheckButton/icons/unchecked = null
+FileDialog/styles/panel = SubResource("StyleBoxFlat_4eyek")
 HSeparator/styles/separator = SubResource("StyleBoxLine_otv3f")
 HeaderLarge/font_sizes/font_size = 40
 HeaderLarge/fonts/font = ExtResource("1_4eyek")
@@ -359,6 +370,7 @@ TightButton/base_type = &"Button"
 TightButton/styles/hover = SubResource("StyleBoxFlat_cxpy4")
 TightButton/styles/normal = SubResource("StyleBoxFlat_ba2t2")
 TightButton/styles/pressed = SubResource("StyleBoxFlat_gpc4c")
+TooltipLabel/styles/normal = SubResource("StyleBoxEmpty_4eyek")
 TooltipPanel/styles/panel = SubResource("StyleBoxFlat_krkfi")
 Tree/icons/checked = null
 Tree/icons/select_arrow = null

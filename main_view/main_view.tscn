@@ -10,7 +10,7 @@
 [sub_resource type="ViewportTexture" id="ViewportTexture_y23rn"]
 viewport_path = NodePath("SubViewport")
 
-[node name="MainView" type="Control" node_paths=PackedStringArray("image_info_label", "image_path_label", "zoom_slider", "dithered_sprite", "dither_button", "settings_container")]
+[node name="MainView" type="Control" node_paths=PackedStringArray("image_info_label", "image_path_label", "zoom_slider", "show_original_button", "dithered_sprite", "save_button", "settings_container", "viewport", "file_dialog")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -22,17 +22,21 @@ script = ExtResource("2_hympp")
 image_info_label = NodePath("HBoxContainer/PanelContainer/ImageInfo")
 image_path_label = NodePath("HBoxContainer/PanelContainer/VBoxContainer/ImagePath")
 zoom_slider = NodePath("HBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/ZoomSlider")
+show_original_button = NodePath("HBoxContainer/PanelContainer/VBoxContainer/ShowOriginalButton")
 dithered_sprite = NodePath("SubViewport/DitheredSprite")
-dither_button = NodePath("HBoxContainer/SettingsContainer/DitherButton")
+save_button = NodePath("HBoxContainer/SettingsContainer/SaveButton")
 settings_container = NodePath("HBoxContainer/SettingsContainer/SettingsContainer")
 control_types = Dictionary[int, PackedScene]({
 3: ExtResource("3_pwtt8")
 })
+viewport = NodePath("SubViewport")
+file_dialog = NodePath("FileDialog")
 
 [node name="SubViewport" type="SubViewport" parent="."]
 transparent_bg = true
 snap_2d_transforms_to_pixel = true
 snap_2d_vertices_to_pixel = true
+render_target_update_mode = 4
 
 [node name="DitheredSprite" type="Sprite2D" parent="SubViewport"]
 texture_filter = 1
@@ -72,6 +76,10 @@ layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
 
+[node name="ShowOriginalButton" type="Button" parent="HBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Original"
+
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
 
@@ -108,6 +116,14 @@ layout_mode = 2
 [node name="SettingsContainer" type="VBoxContainer" parent="HBoxContainer/SettingsContainer"]
 layout_mode = 2
 
-[node name="DitherButton" type="Button" parent="HBoxContainer/SettingsContainer"]
+[node name="SaveButton" type="Button" parent="HBoxContainer/SettingsContainer"]
 layout_mode = 2
-text = "Dither"
+tooltip_text = "Save the image to your computer."
+text = "Save Image"
+
+[node name="FileDialog" type="FileDialog" parent="."]
+oversampling_override = 1.0
+mode = 2
+initial_position = 1
+size = Vector2i(896, 360)
+access = 1
