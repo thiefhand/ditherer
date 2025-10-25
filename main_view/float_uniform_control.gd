@@ -1,6 +1,7 @@
 extends UniformControl
 
 @export var name_label: Label
+@export var value_label: Label
 @export var slider: HSlider
 
 func _ready() -> void:
@@ -12,6 +13,7 @@ func set_uniform_name(_name: String):
 func set_uniform_value(value: Variant):
 	if value:
 		slider.value = value
+		value_label.text = str(value)
 
 func set_uniform_hint(hint: int, hint_string: String):
 	match hint:
@@ -19,7 +21,9 @@ func set_uniform_hint(hint: int, hint_string: String):
 			var bounds = hint_string.split_floats(",", false)
 			slider.min_value = bounds[0]
 			slider.max_value = bounds[1]
-			slider.step = bounds[2]
+			if bounds.size() > 2:
+				slider.step = bounds[2]
 
 func _on_value_changed(value: float):
 	uniform_value_changed.emit(value)
+	value_label.text = str(value)

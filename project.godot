@@ -10,10 +10,11 @@ config_version=5
 
 [application]
 
-config/name="ditherer"
+config/name="Ditherer"
+config/description="s"
 run/main_scene="uid://bm6b6nyt3mcbk"
 config/features=PackedStringArray("4.5", "Forward Plus")
-config/icon="res://icon.svg"
+config/icon="uid://dy1haj45ireto"
 
 [display]
 

@@ -1,18 +1,53 @@
-[gd_scene load_steps=9 format=3 uid="uid://dou16yuhswxh"]
+[gd_scene load_steps=23 format=3 uid="uid://dou16yuhswxh"]
 
 [ext_resource type="Theme" uid="uid://dga63ewni6evh" path="res://ui/meta_menu_theme.tres" id="1_oqftn"]
 [ext_resource type="Script" uid="uid://b8p87woet7xat" path="res://main_view/main_view.gd" id="2_hympp"]
 [ext_resource type="Texture2D" uid="uid://ca6cxdwd4ifwq" path="res://main_view/sucky.png" id="2_y23rn"]
-[ext_resource type="Material" uid="uid://cojv2vsqo3inn" path="res://main_view/dither_mat.tres" id="3_kyf05"]
 [ext_resource type="PackedScene" uid="uid://ssk1xfvkor05" path="res://main_view/float_uniform_control.tscn" id="3_pwtt8"]
+[ext_resource type="Script" uid="uid://b847bwax7bl11" path="res://main_view/algos/bayer_16.gd" id="4_afxnm"]
+[ext_resource type="Script" uid="uid://cssjfsbyi45nq" path="res://main_view/algos/goofy_green_algo.gd" id="4_f2mg0"]
+[ext_resource type="Script" uid="uid://bamvcja8hatw7" path="res://main_view/algos/algo.gd" id="5_tn5o1"]
 [ext_resource type="Script" uid="uid://dhy41ston6oim" path="res://main_view/viewport_tex.gd" id="6_afxnm"]
+[ext_resource type="Script" uid="uid://ck1rkis164r8t" path="res://main_view/algos/bayer_4.gd" id="7_ewfra"]
+[ext_resource type="Script" uid="uid://bsaj262vve8pv" path="res://main_view/algos/floyd_steinberg.gd" id="8_ewfra"]
+[ext_resource type="Script" uid="uid://brpg6nfy5ssfe" path="res://main_view/algos/jjn.gd" id="9_l1qt5"]
+[ext_resource type="Script" uid="uid://viuxfndhw5bv" path="res://main_view/algos/atkinson.gd" id="10_sy3ps"]
+[ext_resource type="Texture2D" uid="uid://dy1haj45ireto" path="res://icon.png" id="13_gcx80"]
+
+[sub_resource type="Resource" id="Resource_f2mg0"]
+script = ExtResource("4_afxnm")
+metadata/_custom_type_script = "uid://b847bwax7bl11"
+
+[sub_resource type="Resource" id="Resource_l1qt5"]
+script = ExtResource("4_f2mg0")
+metadata/_custom_type_script = "uid://cssjfsbyi45nq"
+
+[sub_resource type="Resource" id="Resource_sy3ps"]
+script = ExtResource("7_ewfra")
+metadata/_custom_type_script = "uid://ck1rkis164r8t"
+
+[sub_resource type="Resource" id="Resource_gcx80"]
+script = ExtResource("4_afxnm")
+metadata/_custom_type_script = "uid://b847bwax7bl11"
+
+[sub_resource type="Resource" id="Resource_gjjxo"]
+script = ExtResource("8_ewfra")
+metadata/_custom_type_script = "uid://bsaj262vve8pv"
+
+[sub_resource type="Resource" id="Resource_x6eeh"]
+script = ExtResource("9_l1qt5")
+metadata/_custom_type_script = "uid://brpg6nfy5ssfe"
+
+[sub_resource type="Resource" id="Resource_jq012"]
+script = ExtResource("10_sy3ps")
+metadata/_custom_type_script = "uid://viuxfndhw5bv"
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_y23rn"]
 viewport_path = NodePath("SubViewport")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_afxnm"]
 
-[node name="MainView" type="Control" node_paths=PackedStringArray("image_info_label", "image_path_label", "zoom_slider", "show_original_button", "dithered_sprite", "save_button", "settings_container", "viewport", "file_dialog")]
+[node name="MainView" type="Control" node_paths=PackedStringArray("image_info_label", "image_path_label", "zoom_slider", "show_original_button", "dithered_sprite", "save_button", "save_scaled_button", "scale_input", "settings_container", "viewport", "file_dialog", "algo_option_button")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -27,12 +62,18 @@ zoom_slider = NodePath("HBoxContainer/PanelContainer/VBoxContainer/HBoxContainer
 show_original_button = NodePath("HBoxContainer/PanelContainer/VBoxContainer/ShowOriginalButton")
 dithered_sprite = NodePath("SubViewport/DitheredSprite")
 save_button = NodePath("HBoxContainer/SettingsContainer/SaveButton")
+save_scaled_button = NodePath("HBoxContainer/SettingsContainer/HBoxContainer/SaveScaledButton")
+scale_input = NodePath("HBoxContainer/SettingsContainer/HBoxContainer/ScaleInput")
 settings_container = NodePath("HBoxContainer/SettingsContainer/SettingsContainer")
 control_types = Dictionary[int, PackedScene]({
+2: ExtResource("3_pwtt8"),
 3: ExtResource("3_pwtt8")
 })
 viewport = NodePath("SubViewport")
 file_dialog = NodePath("FileDialog")
+current_algo = SubResource("Resource_f2mg0")
+algos = Array[ExtResource("5_tn5o1")]([SubResource("Resource_l1qt5"), SubResource("Resource_sy3ps"), SubResource("Resource_gcx80"), SubResource("Resource_gjjxo"), SubResource("Resource_x6eeh"), SubResource("Resource_jq012")])
+algo_option_button = NodePath("HBoxContainer/SettingsContainer/AlgoOptionButton")
 
 [node name="SubViewport" type="SubViewport" parent="."]
 transparent_bg = true
@@ -43,7 +84,6 @@ render_target_update_mode = 4
 [node name="DitheredSprite" type="Sprite2D" parent="SubViewport"]
 texture_filter = 1
 texture_repeat = 1
-material = ExtResource("3_kyf05")
 scale = Vector2(3, 3)
 texture = ExtResource("2_y23rn")
 
@@ -106,13 +146,33 @@ text = "example.png"
 custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HBoxContainer/SettingsContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer/SettingsContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="Label" type="Label" parent="HBoxContainer/SettingsContainer/HBoxContainer2"]
 layout_mode = 2
 theme_type_variation = &"HeaderLarge"
 text = "DITHERER"
 horizontal_alignment = 1
 
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/SettingsContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = ExtResource("13_gcx80")
+expand_mode = 2
+stretch_mode = 4
+
+[node name="Label2" type="Label" parent="HBoxContainer/SettingsContainer/HBoxContainer2"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.4627451)
+text = "by Thiefhand"
+
 [node name="HSeparator" type="HSeparator" parent="HBoxContainer/SettingsContainer"]
+layout_mode = 2
+
+[node name="AlgoOptionButton" type="OptionButton" parent="HBoxContainer/SettingsContainer"]
 layout_mode = 2
 
 [node name="SettingsContainer" type="VBoxContainer" parent="HBoxContainer/SettingsContainer"]
@@ -122,6 +182,26 @@ layout_mode = 2
 layout_mode = 2
 tooltip_text = "Save the image to your computer."
 text = "Save Image"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/SettingsContainer"]
+layout_mode = 2
+
+[node name="SaveScaledButton" type="Button" parent="HBoxContainer/SettingsContainer/HBoxContainer"]
+layout_mode = 2
+tooltip_text = "Save the image to your computer."
+text = "Save Scaled Image"
+
+[node name="ScaleInput" type="TextEdit" parent="HBoxContainer/SettingsContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 45)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+placeholder_text = "100"
+
+[node name="Label" type="Label" parent="HBoxContainer/SettingsContainer/HBoxContainer"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "% Scale"
 
 [node name="HSeparator2" type="HSeparator" parent="HBoxContainer/SettingsContainer"]
 layout_mode = 2
